@@ -33,8 +33,11 @@ def server(port, task):
             for client in clients_a_lire:
                 # Client es&t de type socket
                 try:
-                    task(client)
+                    t = task(client)
+                    if t:
+                        clients_connectes.remove(client) 
                 except ConnectionAbortedError: #Si le client n'est plus connecté, on l'enlève de la liste
+                    print("lost")
                     client.close()
                     clients_connectes.remove(client) 
                     
