@@ -1,0 +1,15 @@
+# -*- coding: utf-8 -*-
+class Site(Frame):
+	def __init__(self, root, **kwargs):
+		self.lifeFrame=Frame(root, bg='white', padx=80, pady=40)
+		self.lifeFrame.pack(expand=1, fill=BOTH)
+
+	def createFrame(self):
+		titleFrame=Frame(self.lifeFrame, bg='white', padx=10, pady=4)
+		titleFrame.pack(side=TOP)
+
+		mainFrame=Frame(self.lifeFrame, bg='white', padx=50, pady=10)
+		mainFrame.pack(side=BOTTOM)
+
+interface = Site(webFrame)
+interface.createFrame()
