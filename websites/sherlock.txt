@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+class Site(Frame):
+	def __init__(self, root, **kwargs):
+		self.sherlockFrame=Frame(root, bg='white', padx=80, pady=40)
+		self.sherlockFrame.pack(expand=1, fill=BOTH)
+		self.sherlockBarCleaned=False
+
+	def sendSherlockRequest(self, request):
+		if self.sherlockBarCleaned:
+			sendRequest(request)
+
+	def cleanSherlockBar(self, text, bar, barName):
+		if not self.sherlockBarCleaned:
+			text.set('')
+			bar.config(fg='black')
+			self.sherlockBarCleaned=True
+
+	def uncleanSherlockBar(self, text, bar, barName):
+		if text.get().replace(' ', '')=='':
+			if self.sherlockBarCleaned:
+				text.set('Rechercher...')
+				bar.config(fg='grey')
+				self.sherlockBarCleaned=False
+
+	def createFrame(self):
+		self.sherlockLabel=Label(self.sherlockFrame, text='SHERLOCK', font=('VERDANA BOLD', 50), fg='blue')
+		self.sherlockLabel.place(relx=0.15, rely=0.1, relwidth=0.7, relheight=0.5)
+
+		self.sherlockRequestFrame=Frame(self.sherlockFrame, bg='#F9F8F6')
+		self.sherlockRequestFrame.place(relx=0.1, rely=0.5, relwidth=0.8)
+
+		self.sherlockText = StringVar(self.sherlockRequestFrame, value='Rechercher...')
+		self.sherlockBar=Entry(self.sherlockRequestFrame, font=('VERDANA', 20), fg='grey', textvariable=self.sherlockText)
+		self.sherlockBar.pack(expand=1, fill=X, side=LEFT)
+		self.sherlockBar.bind('<Return>', (lambda event: self.sendSherlockRequest(self.sherlockText.get())))
+		self.sherlockBar.bind('<Button>', (lambda event: self.cleanSherlockBar(self.sherlockText, self.sherlockBar, 'sherlock')))
+		self.sherlockBar.bind('<FocusOut>', (lambda event: self.uncleanSherlockBar(self.sherlockText, self.sherlockBar, 'sherlock')))
+
+		self.sherlockButton=Button(self.sherlockRequestFrame, text='Search', command=(lambda: self.sendSherlockRequest(self.sherlockText.get())))
+		self.sherlockButton.pack(side=RIGHT)
+
+interface = Site(webFrame)
+interface.createFrame()
