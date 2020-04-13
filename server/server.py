@@ -49,4 +49,3 @@ def server(port, task):
     
     connexion_principale.close()
 
-
