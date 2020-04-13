@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
+#---Importation des bibliothèques---#
 from tkinter import *
 import hashlib
 import sherlock
 
 
-
+#---Déclaration des variables globales---#
 userBarCleaned=False
 passwordBarCleaned=False
 searchBarCleaned=False
@@ -12,6 +15,13 @@ page='login'
 
 calmdown=False
 
+#Frame contenant le site web
+webFrame=Frame(root, bg='white', padx=80, pady=40)
+
+
+#---Déclaration des fonctions---#
+
+# Requête de token (avec username et password)
 def goOnline(user, password):
 	global userBarCleaned
 	global passwordBarCleaned
@@ -25,6 +35,7 @@ def goOnline(user, password):
 			page='web'
 			load()
 
+#Fonction pour retirer les textes par défaut sur les entry sélectionnées 
 def cleanBar(text, bar, barName):
 	if barName=='user':
 		global userBarCleaned
@@ -49,6 +60,7 @@ def cleanBar(text, bar, barName):
 		text.set('')
 		bar.config(fg='black')
 
+#Fonction appelée lorsque l'utilisateur quitte une entry
 def uncleanBar(text, bar, barName, event=None):
 	global calmdown
 	global searchBarCleaned
@@ -91,27 +103,41 @@ def uncleanBar(text, bar, barName, event=None):
 			bar.config(justify=CENTER)
 			sendSearchRequest(text.get())
 
+#Supprime la page de login/la webFrame
+def reset():
+	if page=='login':
+		titleFrame.destroy()
+		mainFrame.destroy()
+	elif page=='web':
+		webFrame.destroy()
 
 
+#---Main---#
+
+#Déclaration de la fenêtre racine tkinter
 root=Tk()
 root.geometry('800x400')
 root.title('Big Browser')
 root.minsize(600, 300)
 
-
+#====LOGIN====#
+#//HEADER DU LOGIN//#
 titleFrame=Frame(root, height=20, bg='blue', padx=200, pady=4, relief='raise', bd=2)
 titleFrame.pack(fill=BOTH)
 
 title=Label(titleFrame, text='BIG BROWSER', bg='blue', font=('VERDANA BOLD',20))
 title.pack(fill=BOTH)
 
-
+#//CORPS DU LOGIN//#
+#Frame principale
 mainFrame=Frame(root, bg='grey', padx=80, pady=40)
 mainFrame.pack(expand=1, fill=BOTH)
 
+#Frame des formulaires du login
 loginFrame=Frame(mainFrame, bg='#F9F8F6', padx=30)
 loginFrame.place(relx=0.2, rely=0.2, relwidth=0.6, relheight=0.6)
 
+#Champs username et password
 userText = StringVar(titleFrame, value='Pseudo')
 passwordText = StringVar(loginFrame, value='Mot de passe')
 
@@ -131,27 +157,16 @@ def createPasswordBar():
 
 passwordBar=createPasswordBar()
 
+#Boutton de connexion
 goOnlineButton=Button(loginFrame, text='GO ONLINE', command=(lambda: goOnline(userText.get(), passwordText.get())), bg='#F9F8F6')
 goOnlineButton.pack(expand=1, fill=BOTH, side=BOTTOM)
 
-
-
-
-
-
-
-webFrame=Frame(root, bg='white', padx=80, pady=40)
-
+#====BROWSER====#
+#//Déclaration des variables//#
 historic=[]
 siteUrl=''
 
-def reset():
-	if page=='login':
-		titleFrame.destroy()
-		mainFrame.destroy()
-	elif page=='web':
-		webFrame.destroy()
-
+#//Déclaration des fonctions//#
 def sendRequest(request, historicNav=False):
 	global webFrame
 	global historic
@@ -168,10 +183,11 @@ def sendRequest(request, historicNav=False):
 			historic.append(siteUrl)
 		print(historic)
 
-
 def sendSearchRequest(request):
 	sendRequest(request)
 
+#Fonctions appelée lorsqu'on quitte le login
+#Charge le browser
 def load():
 	global siteUrl
 	siteUrl='sherlock.frd'
@@ -200,6 +216,6 @@ def load():
 
 	return (searchFrame, searchText, searchBar, searchRefreshButton, webFrame)
 	
-
+#---End---#
 root.mainloop()
 root.destroy()
