@@ -15,4 +15,6 @@ def DNS(url,token):
 def get(url,directory,token):
     s = FRPConect(url,12801)
     FRPSend(s,{'directory' : directory, 'token': token})
-    return FRPRcv(s)
+    rcv = FRPRcv(s)
+    s.close()
+    return rcv
