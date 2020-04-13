@@ -2,6 +2,8 @@
 import socket
 import select
 
+#Server : système des gestion d'un serveur executant la fonction task pour chaque client connecté
+
 def server(port, task):
 
     connexion_principale = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -31,13 +33,12 @@ def server(port, task):
         else:
             # On parcourt la liste des clients à lire
             for client in clients_a_lire:
-                # Client es&t de type socket
+                # Client est de type socket
                 try:
-                    t = task(client)
-                    if t:
+                    t = task(client) 
+                    if t: #Si t est terminée, on suprime le client
                         clients_connectes.remove(client) 
                 except ConnectionAbortedError: #Si le client n'est plus connecté, on l'enlève de la liste
-                    print("lost")
                     client.close()
                     clients_connectes.remove(client) 
                     
