@@ -1,20 +1,22 @@
 import pandas as pd
 from server import server
-import pickle
+import sys
+sys.path.append("..")
+
+from FRP import FRPSend,FRPRcv
+
 
 def dns(client):
     # Peut planter si le message contient des caractères spéciaux
-    msg_recu = client.recv(1024)
-    msg_recu = msg_recu.decode()
-    url = msg_recu
-    
-    data = {"server" : dnsTable["server"][dnsTable.url == "test.fds"][0],
-            "directory": dnsTable["directory"][dnsTable.url == "test.fds"][0]}
-    msg = pickle.dumps(data)
-    msg = bytes(f"{len(msg):<{HEADERSIZE}}", 'utf-8')+msg
-    client.send(msg)
-        
-dnsTable = pd.read_csv('dns.csv')
-HEADERSIZE = 10
+    msg = FRPRcv(client)
+    print("recieved")
+    url = msg['url'].decode()
+    data = {"server" : dnsTable["server"][dnsTable.url == url][0],
+            "directory": dnsTable["directory"][dnsTable.url == url][0]}
+    FRPSend(client,data)
+    print("send")
 
-server(12800,dns)
+        
+dnsTable = pd.read_csv("dns.csv")
+
+server(23486,dns)
