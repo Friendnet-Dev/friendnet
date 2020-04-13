@@ -5,6 +5,7 @@ sys.path.append("..")
 
 from FRP import FRPSend,FRPRcv
 
+#Serveur DNS : à la recpetion d'une url, renvoie l'ip et le répertoire recupérés dans dns.csv
 
 def dns(client):
     # Peut planter si le message contient des caractères spéciaux
