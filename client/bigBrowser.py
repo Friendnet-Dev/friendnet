@@ -6,6 +6,13 @@ import hashlib
 import sherlock
 
 
+#---Déclaration de la fenêtre racine tkinter---#
+root=Tk()
+root.geometry('800x400')
+root.title('Big Browser')
+root.minsize(750, 300)
+
+
 #---Déclaration des variables globales---#
 userBarCleaned=False
 passwordBarCleaned=False
@@ -113,12 +120,6 @@ def reset():
 
 
 #---Main---#
-
-#Déclaration de la fenêtre racine tkinter
-root=Tk()
-root.geometry('800x400')
-root.title('Big Browser')
-root.minsize(600, 300)
 
 #====LOGIN====#
 #//HEADER DU LOGIN//#
